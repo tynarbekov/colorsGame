@@ -7,3 +7,10 @@
   margin-top: 5%;
   text-align: center;
 }
+body{
+  background-color: #eba;
+}
+.question-answer{
+  background: rgba(222,222,222,0.4);
+  /* font-size: 32px: */
+}
