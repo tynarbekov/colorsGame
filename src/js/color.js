@@ -20,6 +20,8 @@ class ColorsGame extends GameController{
     let gameSpace = document.getElementById("color-game-space");
     gameSpace.innerHTML = "";
 
+    let exit = this.createElement("a","","exit");
+    gameSpace.appendChild(exit);
 
     let scoreDiv =  this.createElement("div","offset-xs-11 offset-sm-11 offset-md-11 offset-lg-11");
     let questionDiv = this.createElement("div","col-xs-12 col-sm-12 col-md-12 col-lg-12");
@@ -135,7 +137,12 @@ class ColorsGame extends GameController{
     let question = document.getElementById("question");
     let questionInstraction = document.getElementById("question-instruciton")
     let answers = document.getElementsByClassName("question-answer");
+    let exit = document.getElementById("exit")
 
+    exit.href  = "/gamesForMemory/";
+    exit.style.color = "red";
+    exit.style.fontSize = "30px";
+    exit.innerText = "EXIT"
     questionInstraction.innerText = "Select the word that says the word"
 
     let trueColorKey = this.getRandom(colorLen);

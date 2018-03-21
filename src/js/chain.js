@@ -7,7 +7,6 @@ class ChainGame extends GameController{
     this.registeredAnswers = [];
     this.initWords();
     this.updateWordsList();
-    console.log("IN CONS");
   }
 
   static getGameName(){
@@ -58,40 +57,35 @@ class ChainGame extends GameController{
     let scoreDiv =  this.createElement("div","offset-xs-11 offset-sm-11 offset-md-11 offset-lg-11","scoreDiv");
     let viewWord = this.createElement("div","col-xs-12 col-sm-12 col-md-12 col-lg-12","viewWord");
     let nextWordBtn = this.createButton("Next","btn btn-outline-dark","","next-word-button");
+    let exit = this.createElement("a","","exit");
     nextWordBtn.setAttribute("onclick","cg.changeWord()");
     scoreDiv.appendChild(this.createElement("h3","","score"));
     scoreDiv.appendChild(this.createElement("h3","","listSize"));
     viewWord.appendChild(this.createElement("h3","","current-word"));
     viewWord.appendChild(nextWordBtn);
-
+    gameSpace.appendChild(exit);
     gameSpace.appendChild(scoreDiv);
     gameSpace.appendChild(viewWord);
-    // this.updateWordsList();
-    // this.updateGameSpace();
+    exit.href = "/gamesForMemory/";
+    exit.innerText = "EXIT";
+    exit.style.color = "red";
+    exit.style.fontSize = "30px";
     this.updateLevel();
-    console.log("BEFORE UPDATE LEVEL");
     this.updateWordsList();
     this.changeWord();
   }
 
 
-  // updateGameSpace(){
-  // }
-
   updateWordsList(){
-    console.log("IN updateWordsList");
     let level = getCookieInt(ChainGame.getGameName());
     setCookie(ChainGame.getGameName(),level);
     let arr = this.getRandom(getCookieInt(ChainGame.getGameName()));
-    console.log(arr);
     this.currentWordsList = arr;
     return arr;
   }
 
   nextWord(){
-    console.log("ASD");
-    console.log(this.hasNextWord());
-    if(!this.hasNextWord()){
+  if(!this.hasNextWord()){
       return;
     }
     let nextWord = this.currentWordsList[this.currentWordId]
@@ -100,8 +94,6 @@ class ChainGame extends GameController{
   }
 
   hasNextWord(){
-    console.log(this.currentWordsList);
-    console.log(this.currentWordId);
     return this.currentWordsList.length > this.currentWordId ;
   }
 
@@ -191,13 +183,11 @@ class ChainGame extends GameController{
       level += 1;
       setCookie(ChainGame.getGameName(),level);
     }
-    console.log("LEEEEEEEEEEVEEEEEEEL: " + level);
     document.getElementById("score").innerText = "Level: " + level;
   }
 
   checkForTrue(){
     if (this.currentWordsList.length != this.registeredAnswers.length) {
-      console.log("ERR LEN");
       return false;
     }
     for (var i = 0; i < this.currentWordsList.length; i++) {
@@ -222,10 +212,7 @@ class ChainGame extends GameController{
   }
 
   getRandom(level){
-    console.log("In getRandom");
-    console.log(this.words);
     let nums = [];
-    console.log(level + "LEVEL");
     for (let i = 1; i <= (level*3); i++) {
       let check = "";
       let n = this.words[Math.floor(Math.random() * this.words.length)];
@@ -241,8 +228,6 @@ class ChainGame extends GameController{
         nums.push(n)
       }
     }
-    console.log("NUMS");
-    console.log(nums);
     return nums;
   }
 
