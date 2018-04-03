@@ -66,7 +66,7 @@ class ChainGame extends GameController{
     gameSpace.appendChild(exit);
     gameSpace.appendChild(scoreDiv);
     gameSpace.appendChild(viewWord);
-    exit.href = "/gamesForMemory/";
+    exit.href = "../index.html";
     exit.innerText = "EXIT";
     exit.style.color = "red";
     exit.style.fontSize = "30px";
@@ -74,7 +74,6 @@ class ChainGame extends GameController{
     this.updateWordsList();
     this.changeWord();
   }
-
 
   updateWordsList(){
     let level = getCookieInt(ChainGame.getGameName());
@@ -148,7 +147,6 @@ class ChainGame extends GameController{
     }
   }
 
-
   resultAnswer(element){
     element.disabled = true;
     let answerCheck = document.getElementById("answerView");
@@ -198,7 +196,6 @@ class ChainGame extends GameController{
     return true;
   }
 
-
   shuffle(){
     let arr = [];
     for (var i = 0; i < this.currentWordsList.length; i++) {
@@ -232,27 +229,6 @@ class ChainGame extends GameController{
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //
