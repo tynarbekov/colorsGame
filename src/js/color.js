@@ -55,6 +55,7 @@ function isNull(value){
   return value === null || value === undefined;
 }
 function startNewColorGame() {
+  clearInterval(colorGame.intervalId);
   initGame();
   showColorGameDemo();
 }
@@ -120,10 +121,10 @@ function nextQuestion() {
   var colorLen = colorGame.colorNames.length;
   colorGame.trueColorValue = getRandom(colorLen);
   var name = getRandom(colorLen);
-  
+
   $("#question").text(colorGame.colorNames[name]);
-  $("#question").css("color",colorGame.colorNames[colorGame.trueColorValue]);
-  
+  $("#question").css("color",colorGame.colorValues[colorGame.trueColorValue]);
+
   var trueChoice = getRandom($(".question-answer").length);
   var usedColorValues = [colorGame.trueColorValue];
   var usedColorNames = [name];
@@ -133,7 +134,7 @@ function nextQuestion() {
     usedColorNames.push(tempColorName);
     usedColorValues.push(tempColorValue);
     $(".question-answer")[i].style.color = colorGame.colorValues[tempColorValue];
-    
+
     if(i == trueChoice){
       $(".question-answer")[i].innerText = colorGame.colorNames[colorGame.trueColorValue];
       $(".question-answer")[i].setAttribute("color-value",colorGame.trueColorValue);

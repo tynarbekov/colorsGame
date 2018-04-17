@@ -8,15 +8,21 @@
   text-align: center;
 }
 body{
-  background-color: #eba;
+  background-color: #d6eb26;
 }
 .question-answer{
   background: rgba(222,222,222,0.4);
   /* font-size: 32px: */
 }
+
+
 #myProgress {
   width: 100%;
   background-color: #ddd;
+}
+
+#inner-content {
+  margin-top: 10%;
 }
 
 #progress {
@@ -85,4 +91,33 @@ a.action-link:not([href]) {
 }
 .display-none{
   display: none;
+}
+
+.fix-btn{
+  width: 10em;
+}
+.answer-word-btn{
+  margin: 3px;
+}
+.btn{
+  margin: 3px;
+}
+
+.game-bg{
+  background: #98d6ff;
+}
+.card, .card-body{
+  border-radius: 1rem;
+}
+
+.words-bg{
+  background: #85bfe7;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  width: 15rem;
+}
+
+.score-text{
+  padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+  border-radius: .5rem;
 }

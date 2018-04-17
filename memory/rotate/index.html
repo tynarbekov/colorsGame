@@ -31,37 +31,47 @@
     your browser</a> to improve your experience and security.</p>
 <![endif]-->
 
-<div class="container text-center rotate-game">
-    <h3>Are the squares identical?</h3>
-    <h5>Answer: <span id="game_answer"></span></h5>
-    <h5>Score: <span id="game_points"></span></h5>
-    <div class="row">
-        <div class="col" id="first_table">
+
+<main role="main">
+  <div class="container">
+    <div class="card">
+      <div class="card-body game-bg">
+        <div class="container text-center rotate-game">
+            <h3>Are the squares identical?</h3>
+            <h5>Answer: <span id="game_answer"></span></h5>
+            <h5>Score: <span id="game_points"></span></h5>
+            <div class="row">
+                <div class="col" id="first_table">
+                </div>
+                <div class="col" id="second_table">
+                </div>
+            </div>
+
+            <div class="container text-center">
+                <button class="btn btn-primary" id="answerYes">
+                    Yes
+                </button>
+                <button class="btn btn-danger" id="answerNo">
+                    Not
+                </button>
+
+                <button class="btn btn-danger" id="startGame">
+                    Start
+                </button>
+
+                <a id="exit" href="/../index.html" class="btn btn-danger">Exit</a>
+
+            </div>
         </div>
-        <div class="col" id="second_table">
-        </div>
+      </div>
     </div>
-
-    <div class="container text-center">
-        <button class="btn btn-primary" id="answerYes">
-            Yes
-        </button>
-        <button class="btn btn-danger" id="answerNo">
-            Not
-        </button>
-
-        <button class="btn btn-danger" id="startGame">
-            Start
-        </button>
-
-        <button class="btn btn-danger" id="endGame">
-            Finish the Game.
-        </button>
+  </div>
+</main>
 
 
-    </div>
 
-</div>
+
+
 
 <script src="js/vendor/modernizr-3.5.0.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"

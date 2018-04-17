@@ -1,234 +1,174 @@
-class ChainGame extends GameController{
-  constructor() {
-    super("chainGame");
-    this.words = [];
-    this.currentWordsList = [];
-    this.currentWordId = 0;
-    this.registeredAnswers = [];
-    this.initWords();
-    this.updateWordsList();
-  }
-
-  static getGameName(){
-    return "chainGame";
-  }
-
-  initWords(){
-    for (var i = 1; i <= 200; i++) {
-      this.words.push("word" + i)
+const listOfWords = ['year', 'human', 'time', 'a business', 'live', 'day', 'arm', 'one', 'work', 'word', 'place',
+  'face', 'friend', 'eyes', 'question', 'house', 'side', 'country', 'world', 'head', 'child', 'force',
+  'end', 'view', 'system', 'part', 'country', 'woman', 'money', 'earth', 'car', 'water', 'father', 'hour',
+  'right', 'foot', 'answer', 'door', 'form', 'history', 'vote', 'book', 'opportunity', 'result', 'night',
+  'table', 'region', 'number', 'company', 'people', 'group', 'means', 'start', 'light', 'way', 'level',
+  'communications', 'minute', 'street', 'evening', 'quality', 'think', 'road', 'act', 'month',
+  'state', 'language', 'love', 'sight', 'mother', 'century', 'schoold', 'target', 'society', 'the president',
+  'room', 'order', 'theater',
+];
+function hideGameArenaAll() {
+  $(".game-arena").css("display","none");
+}
+function getRandom(level){
+  var nums = [];
+  for (var i = 1; i <= (2+level); i++) {
+    var check = "";
+    var n = chainGame.words[Math.floor(Math.random() * chainGame.words.length)];
+    if (nums.length==0)
+      nums.push(n);
+    else
+      for (var j = 0; j < nums.length; j++) {
+        check = false;
+        if (nums[j] != n)
+          check = true;
+      }
+    if (check) {
+      nums.push(n)
     }
   }
-
-  startButton(){
-    let gameSpaceDemo = this.createElement("div","container content","chain-game-demo")
-    let gameSpace = document.getElementById("chain-game-space");
-    let bar = this.createElement("div","","demo-start");
-    gameSpace.appendChild(gameSpaceDemo);
-    gameSpaceDemo.appendChild(bar)
-
-    let instructon = this.createElement("div","col-xs-12 col-sm-12 col-md-12 col-lg-12");
-    bar.appendChild(instructon);
-
-    instructon.appendChild(this.createElement("h3","","demo-instruciton"));
-    instructon.appendChild(this.createElement("h3","","demo-description"));
-
-    let btn = this.createButton("","btn btn-outline-dark question-answer");
-    btn.setAttribute("onclick","cg.startGame(this)");
-    instructon.appendChild(btn);
-
-    let ins = document.getElementById("demo-instruciton");
-    let desc = document.getElementById("demo-description");
-
-    ins.innerText = "Instruction";
-    desc.innerText = "You must remember the order of words, and in the end you must compile that list of scattered words"
-    btn.innerText = "Start";
-  }
-
-  startGame(){
-    let demoForHidden = document.getElementById("chain-game-demo");
-    demoForHidden.style.display = "none";
-    this.initGameSpace();
-  }
-
-  initGameSpace(){
-    this.currentWordId = 0;
-    let gameSpace = document.getElementById("chain-game-space");
-    gameSpace.innerHTML = "";
-    let scoreDiv =  this.createElement("div","offset-xs-11 offset-sm-11 offset-md-11 offset-lg-11","scoreDiv");
-    let viewWord = this.createElement("div","col-xs-12 col-sm-12 col-md-12 col-lg-12","viewWord");
-    let nextWordBtn = this.createButton("Next","btn btn-outline-dark","","next-word-button");
-    let exit = this.createElement("a","","exit");
-    nextWordBtn.setAttribute("onclick","cg.changeWord()");
-    scoreDiv.appendChild(this.createElement("h3","","score"));
-    scoreDiv.appendChild(this.createElement("h3","","listSize"));
-    viewWord.appendChild(this.createElement("h3","","current-word"));
-    viewWord.appendChild(nextWordBtn);
-    gameSpace.appendChild(exit);
-    gameSpace.appendChild(scoreDiv);
-    gameSpace.appendChild(viewWord);
-    exit.href = "../index.html";
-    exit.innerText = "EXIT";
-    exit.style.color = "red";
-    exit.style.fontSize = "30px";
-    this.updateLevel();
-    this.updateWordsList();
-    this.changeWord();
-  }
-
-  updateWordsList(){
-    let level = getCookieInt(ChainGame.getGameName());
-    setCookie(ChainGame.getGameName(),level);
-    let arr = this.getRandom(getCookieInt(ChainGame.getGameName()));
-    this.currentWordsList = arr;
-    return arr;
-  }
-
-  nextWord(){
-  if(!this.hasNextWord()){
-      return;
-    }
-    let nextWord = this.currentWordsList[this.currentWordId]
-    this.currentWordId++;
-    return nextWord;
-  }
-
-  hasNextWord(){
-    return this.currentWordsList.length > this.currentWordId ;
-  }
-
-  changeWord(){
-    if(this.hasNextWord()){
-      let currentWord = this.nextWord();
-      document.getElementById("current-word").innerText = currentWord;
-    }
-    else {
-      this.checkAnswerView();
-    }
-  }
-
-  checkAnswerView(){
-    let exView = document.getElementById("viewWord");
-    exView.style.display = "none";
-    let mainDiv = document.getElementById("chain-game-space");
-    let answerCheck = this.createElement("div","d-flex flex-column justify-content-center col-xs-12 col-sm-12 col-md-12 col-lg-12","answerView");
-    mainDiv.appendChild(answerCheck);
-
-
-    let shuffle = this.shuffle();
-    for (var i = 0; i < shuffle.length; i++) {
-      let b = answerCheck.appendChild(this.createButton(shuffle[i],"btn btn-outline-dark ans"));
-      b.setAttribute("onclick","cg.registerAnswer(this)");
-    }
-
-    let checkButton = this.createButton("Check","btn btn-outline-dark");
-    checkButton.setAttribute("onclick","cg.resultAnswer(this)");
-    answerCheck.appendChild(checkButton);
-    checkButton.style.color = "red";
-    checkButton.id = "checkAnswer";
-    checkButton.disabled = true;
-  }
-
-  registerAnswer(element){
-    element.style.color = "green";
-    element.disabled = true;
-    if (this.registeredAnswers.length == this.currentWordsList.length) {
+  return nums;
+}
+function ChainGame() {
+  return {
+    gameName : "chainGame",
+    words: [],
+    currentWordsList : [],
+    currentWordId : [],
+    registeredAnswers : [],
+    shuffledWordsList : [],
+    trueAnswerCount : 0,
+    initWords : function () {
+      this.words = listOfWords.slice();
+    },
+    getLevel : function () {
+      if(!parseInt(getCookie(this.gameName))){
+        this.setLevel(0);
+      }
+      return parseInt(getCookie(this.gameName));
+    },
+    setLevel : function (value) {
+      setCookie(this.gameName, value);
+    },
+    incLevel : function(){
+      this.setLevel(this.getLevel() + 1);
+    },
+    updateWordsList : function () {
       this.registeredAnswers = [];
-    }
-    this.registeredAnswers.push(element.innerText);
-    let ansClass = document.getElementsByClassName("ans")
-    let count = 0;
-    for (var i = 0; i < ansClass.length; i++) {
-      if (ansClass[i].disabled == true)
-        count += 1;
-    }
-    if (count == ansClass.length) {
-      let checkButton = document.getElementById("checkAnswer");
-      checkButton.disabled = false;
-    }
-  }
-
-  resultAnswer(element){
-    element.disabled = true;
-    let answerCheck = document.getElementById("answerView");
-    let result = this.createElement("h3","","result");
-    let next = this.createButton("Next","btn btn-outline-dark");
-    answerCheck.appendChild(result);
-    if (this.checkForTrue()) {
-      let level = getCookieInt(ChainGame.getGameName());
-      level += 1;
-      setCookie(ChainGame.getGameName(),level);
-      result.innerText = "CORRECT";
-      result.style.color = "green"
-      answerCheck.appendChild(next);
-      next.setAttribute("onclick","cg.nextLevel(this)");
-    }
-    else {
-      result.innerText = "INCORRECT";
-      result.style.color = "red"
-      answerCheck.appendChild(next);
-      next.setAttribute("onclick","cg.nextLevel(this)");
-      next.innerText = "Restart";
-    }
-  }
-
-  nextLevel(element){
-    this.initGameSpace();
-  }
-
-  updateLevel(){
-    let level = getCookieInt(ChainGame.getGameName());
-    if (level==0) {
-      level += 1;
-      setCookie(ChainGame.getGameName(),level);
-    }
-    document.getElementById("score").innerText = "Level: " + level;
-  }
-
-  checkForTrue(){
-    if (this.currentWordsList.length != this.registeredAnswers.length) {
-      return false;
-    }
-    for (var i = 0; i < this.currentWordsList.length; i++) {
-      if (this.currentWordsList[i]!=this.registeredAnswers[i]) {
-        return false;
+      this.currentWordId = 0;
+      this.currentWordsList = [];
+      var level = this.getLevel();
+      this.setLevel(level);
+      var arr = getRandom(this.getLevel());
+      this.currentWordsList = arr;
+      return arr;
+    },
+    shuffleWordList : function (){
+      var arr = [];
+      for (var i = 0; i < this.currentWordsList.length; i++) {
+        arr.push(this.currentWordsList[i]);
       }
-    }
-    return true;
-  }
-
-  shuffle(){
-    let arr = [];
-    for (var i = 0; i < this.currentWordsList.length; i++) {
-      arr.push(this.currentWordsList[i]);
-    }
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }
-
-  getRandom(level){
-    let nums = [];
-    for (let i = 1; i <= (level*3); i++) {
-      let check = "";
-      let n = this.words[Math.floor(Math.random() * this.words.length)];
-      if (nums.length==0)
-        nums.push(n);
-      else
-        for (let j = 0; j < nums.length; j++) {
-          check = false;
-          if (nums[j] != n)
-            check = true;
-        }
-      if (check) {
-        nums.push(n)
+      for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
       }
+      this.shuffledWordsList = arr;
+      return arr;
     }
-    return nums;
-  }
+  };
+}
+var chainGame = ChainGame();
 
+function updateLevel(){
+  $("#level-value").text(chainGame.getLevel());
 }
 
+function hasNextWord() {
+  return chainGame.currentWordsList.length > chainGame.currentWordId;
+}
+function getNextWord() {
+  if(!hasNextWord()){
+    return;
+  }
+  return chainGame.currentWordsList[chainGame.currentWordId++];
+}
+function showNextWord() {
+  if(hasNextWord()){
+    $("#current-word").text(getNextWord());
+  }else{
+    showAnswersView();
+  }
+}
 
-//
+function showAnswersView(){
+  hideGameArenaAll();
+  $("#answer-view").css("display","block");
+  chainGame.shuffleWordList();
+  $("#checkAnswer").prop('disabled',true);
+  for(var i = 0;i < chainGame.shuffledWordsList.length;i++){
+    var btn = "<div class='d-flex justify-content-center'>";
+    btn += "<div class='answer-helper '></div>";
+
+    btn += "<button class='btn btn-outline-dark ans answer-word-btn fix-btn' >";
+    btn += chainGame.shuffledWordsList[i] +"</button>";
+
+    btn += "<div answer-helper></div></div>";
+    $(".answer-btn-space").html($(".answer-btn-space").html() + btn);
+  }
+}
+function showResultView() {
+  hideGameArenaAll();
+  $("#result-view").css("display", "block");
+  for (var i = 0; i < chainGame.currentWordsList.length; i++) {
+    var btn = "";
+    if (chainGame.currentWordsList[i] === chainGame.registeredAnswers[i]) {
+      btn += "<div class='d-flex justify-content-center'><button class='btn btn-outline-success answer-helper fix-btn' disabled> ";
+      btn += chainGame.currentWordsList[i] + "</button>";
+
+      btn += "<button class='btn btn-success ans answer-word-btn fix-btn' disabled>";
+      btn += chainGame.registeredAnswers[i] + "</button>";
+
+      btn += "<div class='answer-helper'></div></div>";
+      chainGame.trueAnswerCount++;
+    } else {
+      btn += "<div class='d-flex justify-content-center'><button class='btn btn-outline-danger answer-helper fix-btn' disabled>";
+      btn += chainGame.currentWordsList[i] + "</button>";
+
+      btn += "<button class='btn btn-danger ans answer-word-btn fix-btn' disabled>";
+      btn += chainGame.registeredAnswers[i] + "</button>";
+
+      btn += "<div class='answer-helper'></div></div>";
+    }
+    if(chainGame.trueAnswerCount === chainGame.currentWordsList.length ){
+      chainGame.incLevel();
+    }
+    $(".result-space").html($(".result-space").html() + btn);
+  }
+}
+function showGameArena() {
+  initChainGame();
+  hideGameArenaAll();
+  $("#game-view").css("display","block");
+}
+function showDescView() {
+  hideGameArenaAll();
+  $("#desc-view").css("display","block");
+}
+
+function initChainGame(){
+  $("show-result-btn").prop("disabled",true);
+  $(".answer-btn-space").html("");
+  $(".result-space").html("");
+  updateLevel();
+  chainGame.initWords();
+  chainGame.updateWordsList();
+  showNextWord();
+}
+
+function finishLevel(){
+  showGameArena();
+}
+
+function closeDesc() {
+  showGameArena();
+}

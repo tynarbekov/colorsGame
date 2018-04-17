@@ -135,7 +135,7 @@ $(document).ready(function () {
         if (correct) {
             $("#missingNumbers").text("Correct");
         } else {
-            $("#missingNumbers").text('Incorrect! True answer is: ' + missingNumbers.join(", "));
+            $("#missingNumbers").text('Неправильно! Правильный ответ: ' + missingNumbers.join(", "));
         }
         setTimeout(function () {
             $("#notification").hide();

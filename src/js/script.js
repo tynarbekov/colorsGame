@@ -21,7 +21,7 @@ function getCookieInt(cname){
 }
 function setCookie(cname, cvalue) {
   var exdays = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-  
+
   var d = new Date();
   d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
   var expires = "expires=" + d.toUTCString();
@@ -41,11 +41,11 @@ function clickedCell(el) {
   var elY = parseInt(el.getAttribute("cell-y"));
   var result = document.getElementById("result");
   if (elX == fg._posX && elY == fg._posY) {
-    result.innerHTML = "Right answer";
+    result.innerHTML = "Правильно!";
     el.style.background = "cyan";
     // this.showFly();
   } else {
-    result.innerHTML = "Wrong answer";
+    result.innerHTML = "Неправильно!";
     el.style.background = "red";
     fg.showFly();
   }
@@ -57,6 +57,10 @@ function delay(ms) {
 }
 function isNull(value){
   return value === null || value === undefined;
+}
+
+function getRandom(range){
+  return parseInt(Math.random() * range);
 }
 
 // For all games
@@ -105,7 +109,7 @@ class GameController{
     let exitDiv = this.createElement("div");
     let exit = this.createElement("a","","exit");
     exit.href = "../index.html";
-    exit.innerText = "EXIT";
+    // exit.innerText = "Выйти";
     exit.style.color = "red";
     exit.style.fontSize = "30px";
     exitDiv.appendChild(exit);

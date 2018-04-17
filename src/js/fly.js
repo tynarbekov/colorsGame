@@ -293,21 +293,24 @@ class FlyGame extends GameController{
     }
   }
   initGameSpace(){
-    this.gameSpace.appendChild(this.createExitBtn());
     let movesDiv = this.createElement("div","input-group mb-4","moves");
     let result = this.createElement("div","","result");
-    let movesLabel = this.createElement("label","","");
+    let movesLabel = this.createElement("label"," mr-3","");
     let movesInput = this.createElement("input","form-control","moves-count");
-    movesLabel.innerText = "moves count";
+    movesLabel.innerText = "number of moves";
     movesLabel.setAttribute("for","moves-count");
     movesInput.setAttribute("length","4");
+
+    let movesOuterDiv = this.createElement("div","d-flex justify-content-center");
     movesDiv.appendChild(movesLabel);
     movesDiv.appendChild(movesInput);
-    this.gameSpace.appendChild(movesDiv);
+    movesOuterDiv.appendChild(movesDiv);
+
+    this.gameSpace.appendChild(movesOuterDiv);
 
     this.gameSpace.appendChild(result);
 
-    let tableDiv = this.createElement("div","","table-div");
+    let tableDiv = this.createElement("div"," d-flex justify-content-center","table-div");
     tableDiv.appendChild(this._table);
     this.gameSpace.appendChild(tableDiv);
     this.createEmptyTable();
@@ -321,12 +324,18 @@ class FlyGame extends GameController{
     let startBtn = this.createButton("Start");
     startBtn.setAttribute("onclick","fg.startGame()");
 
-    this.gameSpace.appendChild(startBtn);
+    let gameFooterRowDiv = this.createElement("div","d-flex justify-content-center");
+    let gameFooterColDiv = this.createElement("div","d-flex flex-column");
 
-    this.gameSpace.appendChild(tableSizes);
+    gameFooterColDiv.appendChild(startBtn);
+    gameFooterColDiv.appendChild(tableSizes);
+    gameFooterRowDiv.appendChild(gameFooterColDiv);
+    this.gameSpace.appendChild(gameFooterRowDiv);
+
+    // this.gameSpace.appendChild(gameFooterDiv);
     for(let i = 5; i<14;i+=2){
       let link = this.createElement("a");
-      link.innerText = i + "x" + i;
+      link.innerText = i + "x" + i + "|";
       link.className += "action-link";
       link.removeAttribute("href");
       link.setAttribute("onclick","fg.setTableSize("+i+")" );
@@ -420,11 +429,11 @@ class FlyGame extends GameController{
     let elY = parseInt(el.getAttribute("cell-y"));
     let result = document.getElementById("result");
     if(elX == this._posX && elY == this._posY){
-      result.innerHTML = "Right answer";
+      result.innerHTML = "Correct";
       el.style.background = "cyan"
       // this.showFly();
     }else {
-      result.innerHTML = "Wrong answer";
+      result.innerHTML = "Wrong";
       el.style.background = "red"
       FlyGame.showFly();
     }
